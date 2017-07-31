@@ -16,8 +16,10 @@ class BaseProcessor:
     count = 0
     hour_like_limit = 150
 
-    def __init__(self, db):
+    def __init__(self, db, br, lg):
         self.db = db
+        self.browser = br
+        self.logger = lg
 
     def get_summary(self):
         return {'liked': self.post_liked,

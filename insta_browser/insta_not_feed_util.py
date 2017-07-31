@@ -11,10 +11,6 @@ POST_CSS_SELECTOR = '#fb-root + div article'
 
 
 class NotFeedProcessor(BaseProcessor):
-    def __init__(self, browser, logger, db):
-        BaseProcessor.__init__(self, db=db)
-        self.browser = browser
-        self.logger = logger
 
     def like_user_profile(self, count):
         if count:

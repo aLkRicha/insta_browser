@@ -62,7 +62,7 @@ class Browser:
         br = self.browser
         self.get("https://www.instagram.com/{}".format(username))
         self.logger.log("Start liking @{} profile {} posts".format(username, count))
-        processor = NotFeedProcessor(br, self.logger, self.db)
+        processor = NotFeedProcessor(db=self.db, br=br, lg=self.logger)
         processor.like_user_profile(count)
         self.summary = processor.get_summary()
 
@@ -71,7 +71,7 @@ class Browser:
         processed_location = re.sub('^(/?explore/locations/|/|/?locations/)', '', location)
         self.get("https://www.instagram.com/explore/locations/{}".format(processed_location))
         self.logger.log("Start liking top posts from {} location".format(processed_location))
-        processor = NotFeedProcessor(br, self.logger, self.db)
+        processor = NotFeedProcessor(db=self.db, br=br, lg=self.logger)
         processor.like_top()
         processor.like_latest(count)
         self.summary = processor.get_summary()
@@ -80,7 +80,7 @@ class Browser:
         br = self.browser
         self.get("https://www.instagram.com/explore/tags/{}".format(tag))
         self.logger.log("Start liking top posts from #{} tag".format(tag))
-        processor = NotFeedProcessor(br, self.logger, self.db)
+        processor = NotFeedProcessor(db=self.db, br=br, lg=self.logger)
         processor.like_top()
         processor.like_latest(count)
         self.summary = processor.get_summary()
@@ -89,7 +89,7 @@ class Browser:
         br = self.browser
         self.get("https://instagram.com/")
         time.sleep(.5)
-        processor = FeedProcessor(br, self.logger, self.db)
+        processor = FeedProcessor(db=self.db, br=br, lg=self.logger)
         processor.scroll_feed_to_last_not_liked_posts()
         processor.process(self.exclude, self.login, count)
         self.summary = processor.get_summary()

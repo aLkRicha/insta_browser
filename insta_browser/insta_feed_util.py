@@ -8,10 +8,6 @@ NOT_LIKED_CSS_CLASS = '.coreSpriteHeartOpen'
 
 
 class FeedProcessor(BaseProcessor):
-    def __init__(self, browser, logger, db):
-        BaseProcessor.__init__(self, db=db)
-        self.browser = browser
-        self.logger = logger
 
     def scroll_feed_to_last_not_liked_posts(self):
         """
