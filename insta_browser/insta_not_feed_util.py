@@ -11,7 +11,8 @@ POST_CSS_SELECTOR = '#fb-root + div article'
 
 
 class NotFeedProcessor(BaseProcessor):
-    def __init__(self, browser, logger):
+    def __init__(self, browser, logger, db):
+        BaseProcessor.__init__(self, db=db)
         self.browser = browser
         self.logger = logger
 
@@ -26,18 +27,16 @@ class NotFeedProcessor(BaseProcessor):
         self.go_through_posts(posts_count)
 
     def like_top(self):
+        self.get_like_limits(9)
         self.logger.log('Start processing top posts.')
         self.__get_posts_block(TOP_POSTS_XPATH)
-        self.go_through_posts(9)
+        self.go_through_posts(self.count)
 
     def like_latest(self, count):
-        if count:
-            posts_count = self.like_limit - 9 if count > self.like_limit else count - 9
-        else:
-            posts_count = self.like_limit - 9
+        self.get_like_limits(count)
         self.logger.log('Start processing latest posts.')
         self.__get_posts_block(LATEST_POSTS_XPATH)
-        self.go_through_posts(posts_count)
+        self.go_through_posts(self.count-9)
 
     def go_through_posts(self, count):
         self.count = count
@@ -61,6 +60,7 @@ class NotFeedProcessor(BaseProcessor):
         if self.__is_not_liked_acc_post():
             self.heart.click()
             self.logger.log_to_file('--> like post {}'.format(self.browser.current_url))
+            self.db.likes_increment()
             self.post_liked += 1
             self.post_already_liked = 0
             time.sleep(0.5)
