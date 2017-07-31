@@ -47,7 +47,7 @@ class FeedProcessor(BaseProcessor):
         except excp.NoSuchElementException:
             return False
 
-    def process(self, exclude, login, count):  # TODO: remove login from method params
+    def process(self, exclude, login, count):
         """
         liking pre-processed posts. Moving to each post with ActionChains
 
